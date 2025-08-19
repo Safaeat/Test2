@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Test2.Data;
+using Test2.Models;
 
 namespace Test2.Controllers
 {
@@ -11,12 +13,24 @@ namespace Test2.Controllers
         {
             this._Db = context;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var employees = await _Db.Employees.ToListAsync();
+            return View(employees);
         }
         public async Task<IActionResult> Create()
         {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Create(Employee Obj)
+        {
+            if (ModelState.IsValid)
+            {
+                _Db.Add(Obj);
+                await _Db.SaveChangesAsync();
+                return RedirectToAction("Index");
+            }
             return View();
         }
     }
