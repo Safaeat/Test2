@@ -29,6 +29,7 @@ namespace Test2.Controllers
             {
                 _Db.Add(Obj);
                 await _Db.SaveChangesAsync();
+                TempData["EmpSuccess"] = "Employee information added successfully.";
                 return RedirectToAction("Index");
             }
             return View();
