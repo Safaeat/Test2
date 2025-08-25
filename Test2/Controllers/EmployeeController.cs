@@ -59,5 +59,29 @@ namespace Test2.Controllers
             }
             return View(Obj);
         }
+        public async Task<IActionResult> Details(int id)
+        {
+            var employee = await _Db.Employees.FindAsync(id);
+            if (employee == null)
+            {
+                return NotFound();
+            }
+            return View(employee);
+        }public async Task<IActionResult> Delete(int id)
+        {
+            var employee = await _Db.Employees.FindAsync(id);
+            if(employee != null)
+            {
+                _Db.Employees.Remove(employee);
+                await _Db.SaveChangesAsync();
+                TempData["EmpSuccess"] = "Employee information removed successfully";
+            }
+            else
+            {
+                TempData["EmpError"] = "Employee not found";
+            }
+            return RedirectToAction("Index");
+        }
+
     }
 }

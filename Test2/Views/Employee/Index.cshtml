@@ -72,10 +72,20 @@ else
                     <td>
                         <a asp-action="Edit" asp-route-id="@item.Emp_ID">Edit</a> |
                         <a asp-action="Details" asp-route-id="@item.Emp_ID">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Emp_ID">Delete</a>
+                        <a onclick="confirmDelete(@item.Emp_ID)" asp-action="Delete" asp-route-id="@item.Emp_ID">Delete</a>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
 }
+
+<script>
+    function confirmDelete(Emp_ID)
+    {
+        if(confirm("Are you sure you want to delete this employee parmanently?"))
+        {
+            window.location.href = '/Employee/Delete/${Emp_ID}';
+        }
+    }
+</script>
