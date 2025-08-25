@@ -34,5 +34,30 @@ namespace Test2.Controllers
             }
             return View();
         }
+        public async Task<IActionResult> Edit(int id)
+        {
+            var employee = await _Db.Employees.FindAsync(id);
+            if (employee == null)
+            {
+                return NotFound();
+            }
+            return View(employee);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, Employee Obj)
+        {
+            if (id != Obj.Emp_ID)
+            {
+                return NotFound();
+            }
+            if(ModelState.IsValid)
+            {
+                _Db.Update(Obj);
+                await _Db.SaveChangesAsync();
+                TempData["EmpSuccess"] = "Employee information updated successfully.";
+                return RedirectToAction("Index");
+            }
+            return View(Obj);
+        }
     }
 }
